@@ -1,0 +1,144 @@
+/* ─── Tab Bar ─────────────────────────────────────────────────── */
+
+.tab-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0;
+    height: 40px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.tabs-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    overflow-x: auto;
+    flex: 1;
+}
+
+.tabs-container::-webkit-scrollbar {
+    height: 0;
+}
+
+/* ─── Individual Tab ──────────────────────────────────────────── */
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 10px 0 14px;
+    height: 100%;
+    border-right: 1px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    min-width: 120px;
+    max-width: 200px;
+    position: relative;
+    font-size: 13px;
+}
+
+.tab:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-secondary);
+}
+
+.tab.active {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-blue);
+    border-radius: 2px 2px 0 0;
+}
+
+.tab-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ─── Close Button ────────────────────────────────────────────── */
+
+.tab-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    color: inherit;
+    opacity: 0;
+    transition: opacity 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+}
+
+.tab:hover .tab-close {
+    opacity: 0.5;
+}
+
+.tab-close:hover {
+    opacity: 1 !important;
+    background: rgba(244, 63, 94, 0.15);
+    color: var(--accent-rose);
+}
+
+/* ─── Add Tab Button (inline with tabs) ───────────────────────── */
+
+.add-tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin: 0 6px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.add-tab-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* ─── Tab Actions (theme toggle) ──────────────────────────────── */
+
+.tab-actions {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    height: 100%;
+    border-left: 1px solid var(--border-color);
+}
+
+.theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--accent-amber);
+}

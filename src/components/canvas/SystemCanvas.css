@@ -1,0 +1,367 @@
+/* ─── Canvas Layout ───────────────────────────────────────────── */
+
+.canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.reactflow-wrapper {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    background-color: var(--bg-primary);
+    border-radius: 0;
+    overflow: hidden;
+    outline: none;
+}
+
+/* ─── Connection Handles ──────────────────────────────────────── */
+
+.flow-canvas .react-flow__handle {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    border: none;
+    opacity: 0.25;
+    transition: opacity 0.12s ease, transform 0.1s ease, background 0.1s ease;
+    z-index: 10;
+}
+
+/* Large invisible hit area so you don't need to click precisely */
+.flow-canvas .react-flow__handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+
+.flow-canvas .react-flow__node:hover .react-flow__handle,
+.flow-canvas .react-flow__node.selected .react-flow__handle {
+    opacity: 0.7;
+}
+
+.flow-canvas .react-flow__handle:hover {
+    opacity: 1;
+    transform: scale(1.6);
+    background: var(--accent-blue);
+}
+
+/* Strip react-flow node wrapper for standalone component nodes */
+.flow-canvas .react-flow__node {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Custom class for our handles */
+.flow-handle {
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: var(--text-muted) !important;
+    border: none !important;
+}
+
+/* ─── Edge Styling ────────────────────────────────────────────── */
+
+.flow-canvas .react-flow__edge-path,
+.flow-canvas .custom-edge-path {
+    transition: stroke 0.15s ease, stroke-width 0.12s ease;
+}
+
+.flow-canvas .react-flow__edge.selected .react-flow__edge-path,
+.flow-canvas .react-flow__edge.selected .custom-edge-path {
+    stroke: var(--accent-blue) !important;
+    stroke-width: 1.8 !important;
+}
+
+.flow-canvas .react-flow__edge:hover .react-flow__edge-path,
+.flow-canvas .react-flow__edge:hover .custom-edge-path {
+    stroke-width: 1.8 !important;
+    cursor: pointer;
+}
+
+/* Animated / Stream edge */
+.flow-canvas .edge-animated {
+    animation: edge-stream-flow 0.7s linear infinite;
+}
+
+@keyframes edge-stream-flow {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
+
+.flow-canvas .react-flow__connection-path {
+    stroke: var(--accent-blue) !important;
+    stroke-width: 1.2 !important;
+    stroke-dasharray: 5 3;
+    animation: flow-dash 0.6s linear infinite;
+}
+
+@keyframes flow-dash {
+    to {
+        stroke-dashoffset: -9;
+    }
+}
+
+/* ─── Edge Markers ────────────────────────────────────────────── */
+
+.flow-canvas .react-flow__arrowhead polyline {
+    fill: var(--accent-blue);
+    stroke: var(--accent-blue);
+}
+
+/* ─── Controls Panel ──────────────────────────────────────────── */
+
+.flow-canvas .react-flow__controls {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    bottom: 16px;
+    left: 16px;
+}
+
+.flow-canvas .react-flow__controls-button {
+    background: var(--bg-secondary);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
+    fill: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.flow-canvas .react-flow__controls-button:last-child {
+    border-bottom: none;
+}
+
+.flow-canvas .react-flow__controls-button:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    fill: var(--text-primary);
+}
+
+.flow-canvas .react-flow__controls-button svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ─── Selection Box ───────────────────────────────────────────── */
+
+.flow-canvas .react-flow__selection {
+    background: rgba(59, 130, 246, 0.06);
+    border: 1px dashed var(--accent-blue);
+    border-radius: 4px;
+}
+
+/* ─── Minimap ─────────────────────────────────────────────────── */
+
+.flow-canvas .react-flow__minimap {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── Node Selection Outline ──────────────────────────────────── */
+
+.flow-canvas .react-flow__node.selected {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove default ReactFlow node focus ring */
+.flow-canvas .react-flow__node:focus,
+.flow-canvas .react-flow__node:focus-visible {
+    outline: none !important;
+}
+
+/* ─── Grid Crosshair on snap ──────────────────────────────────── */
+
+.flow-canvas .react-flow__background pattern circle {
+    transition: opacity 0.3s ease;
+}
+
+/* ─── Shape Input Styling ─────────────────────────────────────── */
+
+.shape-input {
+    caret-color: var(--accent-blue);
+}
+
+.shape-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+    font-weight: 400;
+}
+
+/* ─── Standalone Component Node ───────────────────────────────── */
+
+.standalone-node {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: var(--text-primary);
+}
+
+.standalone-node-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    width: 100%;
+}
+
+.standalone-node-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    opacity: 0.85;
+}
+
+.standalone-node-label {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 9px;
+    font-weight: 500;
+    font-family: inherit;
+    text-align: center;
+    outline: none;
+    width: 100%;
+    padding: 0;
+    caret-color: var(--accent-blue);
+}
+
+.standalone-node-label::placeholder {
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+
+/* ─── Floating Delete Button ──────────────────────────────────── */
+
+.canvas-delete-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fecdd3;
+    background: rgba(136, 19, 55, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    animation: delete-in 0.15s ease-out;
+}
+
+.canvas-delete-btn:hover {
+    background: rgba(136, 19, 55, 0.85);
+    border-color: rgba(244, 63, 94, 0.5);
+    transform: translateY(-1px);
+}
+
+.canvas-delete-btn:active {
+    transform: scale(0.95);
+}
+
+@keyframes delete-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ─── In-Place Node Action Buttons ────────────────────────────── */
+
+.node-action-buttons {
+    position: absolute;
+    top: -18px;
+    right: -1px;
+    z-index: 20;
+    display: flex;
+    gap: 2px;
+    animation: node-actions-pop 0.1s ease-out;
+}
+
+.node-action-btn {
+    width: 13px;
+    height: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+    opacity: 0.75;
+}
+
+.node-action-btn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.node-action-btn:active {
+    transform: scale(0.8);
+}
+
+.node-rotate-btn {
+    background: var(--accent-blue);
+}
+
+.node-delete-btn {
+    background: #e11d48;
+}
+
+@keyframes node-actions-pop {
+    from {
+        opacity: 0;
+        transform: translateY(3px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Edge Click Target ───────────────────────────────────────── */
+
+.flow-canvas .react-flow__edge {
+    cursor: pointer;
+}

@@ -1,0 +1,99 @@
+/* ─── Color Picker Dialog ─────────────────────────────────────── */
+
+.color-picker-dialog {
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 170px;
+    animation: picker-in 0.15s ease-out;
+}
+
+@keyframes picker-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+[data-theme='light'] .color-picker-dialog {
+    background: rgba(241, 245, 249, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ─── Header ──────────────────────────────────────────────────── */
+
+.color-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.color-picker-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.color-picker-close {
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--text-muted);
+    transition: color 0.15s, background 0.15s;
+}
+
+.color-picker-close:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Color Swatches ──────────────────────────────────────────── */
+
+.color-options {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 180px;
+}
+
+.color-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.color-btn:hover {
+    transform: scale(1.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.color-btn-active {
+    border-color: white !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}

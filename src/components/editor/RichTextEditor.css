@@ -1,0 +1,188 @@
+.rich-text-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.panel-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.editor-header {
+    background-color: var(--bg-secondary);
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-title-input {
+    color: var(--text-primary);
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.tab-title-input::placeholder {
+    color: var(--text-muted);
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1px;
+    padding: 4px 6px;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    min-height: 32px;
+}
+
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    color: var(--text-secondary);
+    background-color: transparent;
+    transition: all 0.15s;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.toolbar-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 16px;
+    background-color: var(--border-color);
+    margin: 0 2px;
+    flex-shrink: 0;
+}
+
+/* Dropdown wrappers */
+.toolbar-dropdown-wrap {
+    position: relative;
+}
+
+.toolbar-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 4px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+    padding: 6px;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    width: 120px;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.1s, border-color 0.1s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.15);
+    border-color: var(--accent-blue);
+}
+
+.size-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 70px;
+}
+
+.size-option {
+    padding: 4px 8px;
+    font-size: 12px;
+    text-align: left;
+    color: var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.size-option:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* Editor content */
+.editor-wrapper {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    flex: 1;
+    overflow: auto;
+}
+
+.content-editable-area {
+    min-height: 100%;
+    padding: 1.25rem;
+    outline: none;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    word-wrap: break-word;
+}
+
+.content-editable-area:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text-muted);
+    font-style: italic;
+    pointer-events: none;
+}
+
+.content-editable-area h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.content-editable-area h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.content-editable-area ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.content-editable-area ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}

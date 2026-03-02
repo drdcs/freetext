@@ -1,0 +1,130 @@
+:root {
+  /* Premium Dark Mode Colors (Default) */
+  --bg-primary: #0f172a;
+  /* slate-900 */
+  --bg-secondary: #1e293b;
+  /* slate-800 */
+  --bg-card: #334155;
+  /* slate-700 */
+  --bg-hover: #475569;
+  /* slate-600 */
+
+  --text-primary: #f8fafc;
+  /* slate-50 */
+  --text-secondary: #cbd5e1;
+  /* slate-300 */
+  --text-muted: #94a3b8;
+  /* slate-400 */
+  --accent-blue: #3b82f6;
+}
+
+[data-theme='light'] {
+  --bg-primary: #f8fafc;
+  /* slate-50 */
+  --bg-secondary: #f1f5f9;
+  /* slate-100 */
+  --bg-card: #e2e8f0;
+  /* slate-200 */
+  --bg-hover: #cbd5e1;
+  /* slate-300 */
+
+  --text-primary: #0f172a;
+  /* slate-900 */
+  --text-secondary: #334155;
+  /* slate-700 */
+  --text-muted: #64748b;
+  /* slate-500 */
+  --accent-blue: #2563eb;
+}
+
+:root {
+  /* Generic Accents */
+
+  /* Accents */
+  --accent-blue: #3b82f6;
+  /* blue-500 */
+  --accent-purple: #8b5cf6;
+  /* purple-500 */
+  --accent-teal: #14b8a6;
+  /* teal-500 */
+  --accent-rose: #f43f5e;
+  /* rose-500 */
+  --accent-amber: #f59e0b;
+  /* amber-500 */
+  --accent-green: #10b981;
+  /* emerald-500 */
+
+  /* Borders and Shadows */
+  --border-color: #334155;
+  /* slate-700 */
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 16px;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  font-family: 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+/* Base application Layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Utility to hide/show scrollbars nicely */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

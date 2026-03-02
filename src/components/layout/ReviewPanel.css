@@ -1,0 +1,29 @@
+.review-panel {
+    background-color: var(--bg-secondary);
+}
+
+.panel-header {
+    background-color: var(--bg-card);
+}
+
+.review-textarea {
+    color: var(--text-primary);
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-sm);
+    transition: border-color 0.2s;
+    line-height: 1.6;
+}
+
+.review-textarea:focus {
+    border-color: var(--accent-blue);
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme='light'] .review-textarea:focus {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.review-textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}

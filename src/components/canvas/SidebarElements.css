@@ -1,0 +1,246 @@
+/* ─── Floating Toolbar ────────────────────────────────────────── */
+
+.floating-toolbar {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(30, 41, 59, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    overflow: hidden;
+}
+
+[data-theme='light'] .floating-toolbar {
+    background: rgba(241, 245, 249, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+/* ─── Tab Switcher ────────────────────────────────────────────── */
+
+.toolbar-tabs {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme='light'] .toolbar-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.toolbar-tab {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.toolbar-tab:hover {
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.toolbar-tab.active {
+    color: var(--accent-blue);
+    background: rgba(59, 130, 246, 0.08);
+}
+
+/* ─── Items Wrapper ───────────────────────────────────────────── */
+
+.toolbar-items-wrapper {
+    padding: 6px;
+}
+
+.toolbar-items-row {
+    display: flex;
+    gap: 2px;
+}
+
+.toolbar-items-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.toolbar-items-grid::-webkit-scrollbar {
+    width: 3px;
+}
+
+.toolbar-items-grid::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+}
+
+/* ─── Toolbar Items (shared) ──────────────────────────────────── */
+
+.toolbar-shape-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    cursor: grab;
+    transition:
+        color 0.12s ease,
+        background-color 0.12s ease,
+        border-color 0.12s ease,
+        transform 0.12s ease;
+    user-select: none;
+    position: relative;
+}
+
+.toolbar-shape-item:hover {
+    color: var(--text-primary);
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.15);
+    transform: translateY(-1px);
+}
+
+.toolbar-shape-item:active {
+    cursor: grabbing;
+    transform: scale(0.92);
+    background: rgba(59, 130, 246, 0.15);
+}
+
+/* ─── Component Items (icon + label) ──────────────────────────── */
+
+.toolbar-component-item {
+    flex-direction: column;
+    gap: 2px;
+    width: 56px;
+    height: 44px;
+    padding: 4px 2px;
+}
+
+.component-label {
+    font-size: 8px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    opacity: 0.7;
+}
+
+.toolbar-component-item:hover .component-label {
+    opacity: 1;
+}
+
+/* ─── Tooltip on hover ────────────────────────────────────────── */
+
+.toolbar-shape-item::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    padding: 3px 7px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease, transform 0.12s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+}
+
+/* Only show tooltip for shape items, not component items (they have labels) */
+.toolbar-component-item::after {
+    display: none;
+}
+
+.toolbar-shape-item:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* ─── Connector Style Picker ──────────────────────────────────── */
+
+.connector-styles-row {
+    display: flex;
+    gap: 4px;
+    padding: 2px 0;
+}
+
+.connector-style-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: color 0.12s ease, background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.connector-style-item:hover {
+    color: var(--text-primary);
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.12);
+}
+
+.connector-style-item.active {
+    color: var(--accent-blue);
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+.connector-style-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    opacity: 0.7;
+}
+
+.connector-style-item.active .connector-style-label {
+    opacity: 1;
+}
+
+/* Animated preview SVG dash flow */
+.connector-preview-animated path {
+    animation: connector-dash-flow 0.8s linear infinite;
+}
+
+@keyframes connector-dash-flow {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
