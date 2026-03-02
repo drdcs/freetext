@@ -1,11 +1,24 @@
 import { Handle, Position, NodeResizer, useReactFlow } from 'reactflow';
-import { useState, memo, useCallback } from 'react';
+import { useState, memo, useCallback, useRef, useEffect } from 'react';
 import { X, RotateCw } from 'lucide-react';
 import { useTabs } from '../../context/TabContext';
 
 function useNodeContent(id, initialText) {
     const { activeTab, updateTabContent } = useTabs();
     const [content, setContent] = useState(initialText || '');
+    const textareaRef = useRef(null);
+
+    const autoResize = useCallback(() => {
+        const el = textareaRef.current;
+        if (el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+    }, []);
+
+    useEffect(() => {
+        autoResize();
+    }, [content, autoResize]);
 
     const handleBlur = () => {
         if (!activeTab) return;
@@ -18,7 +31,7 @@ function useNodeContent(id, initialText) {
         updateTabContent(activeTab.id, { nodes: newNodes });
     };
 
-    return { content, setContent, handleBlur };
+    return { content, setContent, handleBlur, textareaRef };
 }
 
 /* ─── SVG Shape Renderers ─────────────────────────────────────── */
@@ -112,7 +125,7 @@ const SVG_MAP = {
 /* ─── Main Shape Node ─────────────────────────────────────────── */
 
 export function ShapeNode({ id, data, selected, shape }) {
-    const { content, setContent, handleBlur } = useNodeContent(id, data.label);
+    const { content, setContent, handleBlur, textareaRef } = useNodeContent(id, data.label);
     const { deleteElements } = useReactFlow();
     const { activeTab, updateTabContent } = useTabs();
 
@@ -201,12 +214,14 @@ export function ShapeNode({ id, data, selected, shape }) {
                 </div>
 
                 {/* Label — counter-rotates to stay readable, or rotates with shape */}
-                <input
+                <textarea
+                    ref={textareaRef}
                     className="shape-input nodrag"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     onBlur={handleBlur}
                     placeholder="Label"
+                    rows={1}
                     style={inputStyle}
                 />
 

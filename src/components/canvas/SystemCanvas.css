@@ -202,12 +202,11 @@
 
 .shape-input {
     caret-color: var(--accent-blue);
-}
-
-.shape-input::placeholder {
-    color: var(--text-muted);
-    opacity: 0.5;
-    font-weight: 400;
+    resize: none;
+    overflow: hidden;
+    min-height: 16px;
+    line-height: 1.3;
+    display: block;
 }
 
 /* ─── Standalone Component Node ───────────────────────────────── */
@@ -250,11 +249,21 @@
     width: 100%;
     padding: 0;
     caret-color: var(--accent-blue);
+    resize: none;
+    overflow: hidden;
+    min-height: 14px;
+    line-height: 1.3;
 }
 
 .standalone-node-label::placeholder {
     color: var(--text-muted);
     opacity: 0.4;
+}
+
+.shape-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+    font-weight: 400;
 }
 
 /* ─── Floating Delete Button ──────────────────────────────────── */

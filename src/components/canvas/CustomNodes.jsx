@@ -1,5 +1,5 @@
 import { Handle, Position, NodeResizer, useReactFlow } from 'reactflow';
-import { useState, memo, useCallback } from 'react';
+import { useState, memo, useCallback, useRef, useEffect } from 'react';
 import { X, RotateCw } from 'lucide-react';
 import { useTabs } from '../../context/TabContext';
 
@@ -49,6 +49,20 @@ const iconMap = {
 function useNodeContent(id, initialText) {
     const { activeTab, updateTabContent } = useTabs();
     const [content, setContent] = useState(initialText || '');
+    const textareaRef = useRef(null);
+
+    // Auto-resize textarea to fit content
+    const autoResize = useCallback(() => {
+        const el = textareaRef.current;
+        if (el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+    }, []);
+
+    useEffect(() => {
+        autoResize();
+    }, [content, autoResize]);
 
     const handleBlur = () => {
         if (!activeTab) return;
@@ -61,12 +75,12 @@ function useNodeContent(id, initialText) {
         updateTabContent(activeTab.id, { nodes: newNodes });
     };
 
-    return { content, setContent, handleBlur };
+    return { content, setContent, handleBlur, textareaRef, autoResize };
 }
 
 const GenericNode = memo(function GenericNode({ id, data, selected }) {
     const Icon = iconMap[data.type] || BsServer;
-    const { content, setContent, handleBlur } = useNodeContent(id, data.label);
+    const { content, setContent, handleBlur, textareaRef } = useNodeContent(id, data.label);
     const { deleteElements } = useReactFlow();
     const { activeTab, updateTabContent } = useTabs();
 
@@ -119,12 +133,14 @@ const GenericNode = memo(function GenericNode({ id, data, selected }) {
                     <div className="standalone-node-icon">
                         <Icon size={18} />
                     </div>
-                    <input
+                    <textarea
+                        ref={textareaRef}
                         className="nodrag standalone-node-label"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         onBlur={handleBlur}
                         placeholder="Label"
+                        rows={1}
                     />
                 </div>
 
