@@ -57,7 +57,14 @@ const connectorStyles = [
     { type: 'animated', label: 'Stream', dasharray: '6 4', animated: true },
 ];
 
-function ConnectorPreview({ dasharray, animated }) {
+const biConnectorStyles = [
+    { type: 'bi-solid', label: 'Solid', dasharray: null },
+    { type: 'bi-dashed', label: 'Dashed', dasharray: '8 4' },
+    { type: 'bi-dotted', label: 'Dotted', dasharray: '2 3' },
+    { type: 'bi-animated', label: 'Stream', dasharray: '6 4', animated: true },
+];
+
+function ConnectorPreview({ dasharray, animated, bidirectional }) {
     return (
         <svg width="40" height="20" viewBox="0 0 40 20" className={animated ? 'connector-preview-animated' : ''}>
             <path
@@ -68,12 +75,20 @@ function ConnectorPreview({ dasharray, animated }) {
                 strokeDasharray={dasharray || 'none'}
                 strokeLinecap="round"
             />
-            {/* Arrow marker */}
+            {/* Arrow marker at target end */}
             <polygon
                 points="35,14 39,18 35,18"
                 fill="currentColor"
                 opacity="0.8"
             />
+            {/* Arrow marker at source end (bi-directional only) */}
+            {bidirectional && (
+                <polygon
+                    points="5,14 1,18 5,18"
+                    fill="currentColor"
+                    opacity="0.8"
+                />
+            )}
         </svg>
     );
 }
@@ -154,18 +169,35 @@ export default function SidebarElements({ activeEdgeStyle, onEdgeStyleChange }) 
                 )}
 
                 {activeSection === 'connectors' && (
-                    <div className="connector-styles-row">
-                        {connectorStyles.map((cs) => (
-                            <button
-                                key={cs.type}
-                                className={`connector-style-item ${activeEdgeStyle === cs.type ? 'active' : ''}`}
-                                onClick={() => onEdgeStyleChange(cs.type)}
-                                title={cs.label}
-                            >
-                                <ConnectorPreview dasharray={cs.dasharray} animated={cs.animated} />
-                                <span className="connector-style-label">{cs.label}</span>
-                            </button>
-                        ))}
+                    <div className="connector-styles-section">
+                        <div className="connector-section-label">One-way</div>
+                        <div className="connector-styles-row">
+                            {connectorStyles.map((cs) => (
+                                <button
+                                    key={cs.type}
+                                    className={`connector-style-item ${activeEdgeStyle === cs.type ? 'active' : ''}`}
+                                    onClick={() => onEdgeStyleChange(cs.type)}
+                                    title={cs.label}
+                                >
+                                    <ConnectorPreview dasharray={cs.dasharray} animated={cs.animated} />
+                                    <span className="connector-style-label">{cs.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <div className="connector-section-label">Bi-directional</div>
+                        <div className="connector-styles-row">
+                            {biConnectorStyles.map((cs) => (
+                                <button
+                                    key={cs.type}
+                                    className={`connector-style-item ${activeEdgeStyle === cs.type ? 'active' : ''}`}
+                                    onClick={() => onEdgeStyleChange(cs.type)}
+                                    title={cs.label}
+                                >
+                                    <ConnectorPreview dasharray={cs.dasharray} animated={cs.animated} bidirectional />
+                                    <span className="connector-style-label">{cs.label}</span>
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>

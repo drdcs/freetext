@@ -17,7 +17,7 @@ import { useTabs } from '../../context/TabContext';
 import { useTheme } from '../../context/ThemeContext';
 import { SquareNode, CircleNode, RoundedRectNode, TriangleNode, HexagonNode, DiamondNode } from './ShapeNodes';
 import GenericNode from './CustomNodes';
-import { SolidEdge, DashedEdge, DottedEdge, AnimatedEdge } from './CustomEdges';
+import { SolidEdge, DashedEdge, DottedEdge, AnimatedEdge, BiSolidEdge, BiDashedEdge, BiDottedEdge, BiAnimatedEdge } from './CustomEdges';
 import SidebarElements from './SidebarElements';
 import ColorPicker from './ColorPicker';
 import './SystemCanvas.css';
@@ -66,6 +66,10 @@ const edgeTypes = {
     dashed: DashedEdge,
     dotted: DottedEdge,
     animated: AnimatedEdge,
+    'bi-solid': BiSolidEdge,
+    'bi-dashed': BiDashedEdge,
+    'bi-dotted': BiDottedEdge,
+    'bi-animated': BiAnimatedEdge,
 };
 
 const defaultEdgeOptions = {
@@ -83,6 +87,9 @@ function FlowCanvas() {
     const { theme } = useTheme();
     const reactFlowWrapper = useRef(null);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
+    // Clipboard for copy-paste
+    const clipboardRef = useRef({ nodes: [], edges: [] });
 
     // Active connector style
     const [activeEdgeStyle, setActiveEdgeStyle] = useState('solid');
@@ -178,7 +185,43 @@ function FlowCanvas() {
         updateTabContent(activeTab.id, { nodes: newNodes, edges: newEdges });
     }, [activeTab, updateTabContent]);
 
-    // Global keyboard listener for Delete/Backspace
+    // Paste helper: duplicates clipboard nodes with offset & new IDs
+    const pasteFromClipboard = useCallback(() => {
+        const { nodes: clipNodes, edges: clipEdges } = clipboardRef.current;
+        if (clipNodes.length === 0) return;
+
+        const idMap = {};
+        const newNodes = clipNodes.map((n) => {
+            const newId = uuidv4();
+            idMap[n.id] = newId;
+            return {
+                ...n,
+                id: newId,
+                position: { x: n.position.x + 40, y: n.position.y + 40 },
+                selected: true,
+            };
+        });
+
+        const newEdges = clipEdges.map((e) => ({
+            ...e,
+            id: uuidv4(),
+            source: idMap[e.source],
+            target: idMap[e.target],
+        }));
+
+        // Deselect existing nodes
+        const deselected = nodesRef.current.map((n) => ({ ...n, selected: false }));
+
+        updateTabContent(activeTab.id, {
+            nodes: [...deselected, ...newNodes],
+            edges: [...edgesRef.current, ...newEdges],
+        });
+
+        // Update clipboard positions so next paste offsets again
+        clipboardRef.current = { nodes: newNodes, edges: newEdges };
+    }, [activeTab, updateTabContent]);
+
+    // Global keyboard listener for Delete/Backspace/Copy/Paste/Duplicate
     useEffect(() => {
         const handleKeyDown = (e) => {
             // Don't intercept if user is typing in an input/textarea
@@ -194,21 +237,61 @@ function FlowCanvas() {
                 e.preventDefault();
                 deleteSelected();
             }
+
+            // Copy: Ctrl/Cmd + C
+            if ((e.metaKey || e.ctrlKey) && e.key === 'c') {
+                const selNodes = nodesRef.current.filter((n) => n.selected);
+                if (selNodes.length === 0) return;
+                const selNodeIds = new Set(selNodes.map((n) => n.id));
+                const selEdges = edgesRef.current.filter(
+                    (ed) => selNodeIds.has(ed.source) && selNodeIds.has(ed.target)
+                );
+                clipboardRef.current = { nodes: selNodes, edges: selEdges };
+            }
+
+            // Paste: Ctrl/Cmd + V
+            if ((e.metaKey || e.ctrlKey) && e.key === 'v') {
+                e.preventDefault();
+                pasteFromClipboard();
+            }
+
+            // Duplicate: Ctrl/Cmd + D
+            if ((e.metaKey || e.ctrlKey) && e.key === 'd') {
+                e.preventDefault();
+                const selNodes = nodesRef.current.filter((n) => n.selected);
+                if (selNodes.length === 0) return;
+                const selNodeIds = new Set(selNodes.map((n) => n.id));
+                const selEdges = edgesRef.current.filter(
+                    (ed) => selNodeIds.has(ed.source) && selNodeIds.has(ed.target)
+                );
+                clipboardRef.current = { nodes: selNodes, edges: selEdges };
+                pasteFromClipboard();
+            }
         };
 
         document.addEventListener('keydown', handleKeyDown);
         return () => document.removeEventListener('keydown', handleKeyDown);
-    }, [deleteSelected]);
+    }, [deleteSelected, pasteFromClipboard]);
 
 
 
     const onConnect = useCallback(
         (params) => {
-            const updated = addEdge({
+            const isBi = activeEdgeStyle.startsWith('bi-');
+            const edgeOptions = {
                 ...params,
                 type: activeEdgeStyle,
                 markerEnd: defaultEdgeOptions.markerEnd,
-            }, edgesRef.current);
+            };
+            if (isBi) {
+                edgeOptions.markerStart = {
+                    type: MarkerType.ArrowClosed,
+                    color: 'var(--text-muted)',
+                    width: 12,
+                    height: 12,
+                };
+            }
+            const updated = addEdge(edgeOptions, edgesRef.current);
             updateTabContent(activeTab.id, { edges: updated });
         },
         [activeTab, updateTabContent, activeEdgeStyle]

@@ -189,6 +189,22 @@
 
 /* ─── Connector Style Picker ──────────────────────────────────── */
 
+.connector-styles-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.connector-section-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    opacity: 0.6;
+    padding: 4px 6px 0;
+}
+
 .connector-styles-row {
     display: flex;
     gap: 4px;

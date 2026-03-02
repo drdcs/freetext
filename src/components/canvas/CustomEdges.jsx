@@ -6,7 +6,7 @@ import { getBezierPath, MarkerType } from 'reactflow';
 function BaseEdge({
     id, sourceX, sourceY, sourcePosition,
     targetX, targetY, targetPosition,
-    style = {}, markerEnd, selected,
+    style = {}, markerEnd, markerStart, selected,
     strokeDasharray, className = '',
 }) {
     const [edgePath] = getBezierPath({
@@ -30,6 +30,7 @@ function BaseEdge({
                 fill="none"
                 className={`react-flow__edge-path custom-edge-path ${className} ${selected ? 'selected' : ''}`}
                 markerEnd={markerEnd}
+                markerStart={markerStart}
                 style={{
                     stroke: selected ? 'var(--accent-blue)' : 'var(--text-muted)',
                     strokeWidth: selected ? 1.8 : 1.2,
@@ -72,3 +73,29 @@ export const AnimatedEdge = memo((props) => (
     />
 ));
 AnimatedEdge.displayName = 'AnimatedEdge';
+
+/* ─── Bi-Directional Edges ───────────────────────────────────── */
+
+export const BiSolidEdge = memo((props) => (
+    <BaseEdge {...props} className="edge-solid" />
+));
+BiSolidEdge.displayName = 'BiSolidEdge';
+
+export const BiDashedEdge = memo((props) => (
+    <BaseEdge {...props} strokeDasharray="8 4" className="edge-dashed" />
+));
+BiDashedEdge.displayName = 'BiDashedEdge';
+
+export const BiDottedEdge = memo((props) => (
+    <BaseEdge {...props} strokeDasharray="2 3" className="edge-dotted" />
+));
+BiDottedEdge.displayName = 'BiDottedEdge';
+
+export const BiAnimatedEdge = memo((props) => (
+    <BaseEdge
+        {...props}
+        strokeDasharray="6 4"
+        className="edge-animated"
+    />
+));
+BiAnimatedEdge.displayName = 'BiAnimatedEdge';
